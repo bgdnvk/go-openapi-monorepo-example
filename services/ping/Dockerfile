@@ -5,6 +5,7 @@ FROM golang:1.20 as builder
 WORKDIR /app
 
 # Copy Go mod and sum files.
+# go.sum isn't here yet because there are no deps
 # COPY go.mod go.sum ./
 COPY go.mod ./
 
