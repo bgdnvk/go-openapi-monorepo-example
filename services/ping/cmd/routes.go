@@ -2,8 +2,9 @@ package main
 
 import "net/http"
 
-func (app *application) routes() *http.ServeMux {
+func (app *application) routes() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/ping", app.pingHandler)
-	return mux
+
+	return app.logRequest(mux)
 }
