@@ -1,0 +1,8 @@
+package: openapispec
+generate:
+  # types: true
+  chi-server: true
+output: openapispec.gen.go
+# not sure what this is
+output-options:
+  skip-prune: true
