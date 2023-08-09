@@ -1,0 +1,1 @@
+oapi-codegen --config cfg.yaml petstore-expanded.yaml
