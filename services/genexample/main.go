@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net/http"
 
-	// "./gen"
 	"github.com/bgdnvk/go-openapi-monorepo-example/services/genexample/gen"
 	"github.com/go-chi/chi/v5"
 )
