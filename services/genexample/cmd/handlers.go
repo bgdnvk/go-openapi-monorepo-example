@@ -5,8 +5,6 @@ import (
 	"net/http"
 )
 
-type Server struct{}
-
 func (s *Server) GetHello(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "Hello")
 }
