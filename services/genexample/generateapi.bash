@@ -1,1 +1,0 @@
-oapi-codegen -package gen -generate chi-server -o gen/api.gen.go api.yaml
