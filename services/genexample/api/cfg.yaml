@@ -1,0 +1,8 @@
+package: api
+generate:
+  # types: true
+  chi-server: true
+output: api.gen.go
+# not sure what this is
+output-options:
+  skip-prune: true
