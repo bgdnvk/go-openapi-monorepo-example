@@ -13,6 +13,9 @@ import (
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
 
+	// (GET /bye)
+	GetBye(w http.ResponseWriter, r *http.Request)
+
 	// (GET /hello)
 	GetHello(w http.ResponseWriter, r *http.Request)
 }
@@ -20,6 +23,11 @@ type ServerInterface interface {
 // Unimplemented server implementation that returns http.StatusNotImplemented for each endpoint.
 
 type Unimplemented struct{}
+
+// (GET /bye)
+func (_ Unimplemented) GetBye(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusNotImplemented)
+}
 
 // (GET /hello)
 func (_ Unimplemented) GetHello(w http.ResponseWriter, r *http.Request) {
@@ -34,6 +42,21 @@ type ServerInterfaceWrapper struct {
 }
 
 type MiddlewareFunc func(http.Handler) http.Handler
+
+// GetBye operation middleware
+func (siw *ServerInterfaceWrapper) GetBye(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.GetBye(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r.WithContext(ctx))
+}
 
 // GetHello operation middleware
 func (siw *ServerInterfaceWrapper) GetHello(w http.ResponseWriter, r *http.Request) {
@@ -163,6 +186,9 @@ func HandlerWithOptions(si ServerInterface, options ChiServerOptions) http.Handl
 		ErrorHandlerFunc:   options.ErrorHandlerFunc,
 	}
 
+	r.Group(func(r chi.Router) {
+		r.Get(options.BaseURL+"/bye", wrapper.GetBye)
+	})
 	r.Group(func(r chi.Router) {
 		r.Get(options.BaseURL+"/hello", wrapper.GetHello)
 	})

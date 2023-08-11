@@ -12,3 +12,12 @@ paths:
             text/plain:
               schema:
                 type: string
+  /bye:
+    get:
+      responses:
+        '200':
+          description: A simple bye message
+          content:
+            text/plain:
+              schema:
+                type: string
